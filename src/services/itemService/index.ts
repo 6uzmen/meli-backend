@@ -1,8 +1,20 @@
 import { apiMercadoLibre } from '../../apis';
+import express from 'express';
+import { parseIfIntPositive } from '../../utils';
 
-export const getItemsBySearchParameter = async (searchParameter: string) => {
+const DEFAULT_GET_ITEMS_LIMIT = 4;
+
+export const getItemsBySearchParameter = async (req: express.Request) => {
+  const { q, limit } = req.query;
+  // Check if limit received is a valid Number, else Default get items limit
+  const searchLimit: number = parseIfIntPositive(limit?.toString()) || DEFAULT_GET_ITEMS_LIMIT;
+  const queryString = q?.toString();
+  // Check if queryString is a valid String
+  if (!queryString) {
+    throw new Error('Invalid query parametter');
+  }
   try {
-    const response = await apiMercadoLibre.getItemsBySearchParamerter(searchParameter, 4);
+    const response = await apiMercadoLibre.getItemsBySearchParamerter(queryString, searchLimit);
     const { results, filters } = response.data;
     const items = results.map((item: any) => {
       const { id, title, price, currency_id, condition, thumbnail, shipping } = item;
