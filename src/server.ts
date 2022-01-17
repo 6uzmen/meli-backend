@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import routes from './routes';
+import singResponse from './middlewares/singResponse';
 
 dotenv.config();
 
@@ -10,6 +11,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(singResponse);
 
 app.use('/api', routes);
 
