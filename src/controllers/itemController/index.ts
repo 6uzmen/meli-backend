@@ -7,7 +7,7 @@ export const getItems = async (req: express.Request, res: express.Response, next
     res.json(items);
     next();
   } catch (error) {
-    // throw new Error(error.message);
+    res.send(error).status(500);
   }
 };
 
@@ -16,8 +16,6 @@ export const getItemDetails = async (req: express.Request, res: express.Response
     const itemDetails = await itemService.getItemAndDescriptionById(req.params.id);
     res.json({ item: itemDetails });
   } catch (error) {
-    // tslint:disable-next-line:no-console
-    console.log(error);
-    // throw new Error(error.message);
+    res.send(error).status(500);
   }
 };
