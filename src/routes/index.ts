@@ -1,9 +1,8 @@
 import express from 'express';
+import itemRouter from './itemRouter';
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.send('Working!');
-});
+router.use('/items', itemRouter);
 
 export default router;
