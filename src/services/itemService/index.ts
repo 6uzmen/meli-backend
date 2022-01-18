@@ -1,6 +1,6 @@
 import { apiMercadoLibre } from '../../apis';
 import express from 'express';
-import { parseIfIntPositive } from '../../utils';
+import { forrmatItemPrice, parseIfIntPositive } from '../../utils';
 
 const DEFAULT_GET_ITEMS_LIMIT = 4;
 
@@ -17,10 +17,11 @@ export const getItemsBySearchParameter = async (req: express.Request) => {
     // Extract used properties from each Item.
     const items = results.map((item: any) => {
       const { id, title, price, currency_id, condition, thumbnail, shipping, address } = item;
+      const formattedPriceAmount = forrmatItemPrice(price);
       return {
         id,
         title,
-        price: { amount: price, currency: currency_id },
+        price: { amount: formattedPriceAmount[0], currency: currency_id, decimals: formattedPriceAmount[1] },
         picture: thumbnail,
         condition,
         free_shipping: shipping?.free_shipping,
@@ -46,12 +47,12 @@ export const getItemAndDescriptionById = async (itemId: string) => {
 
     const itemCategories = await apiMercadoLibre.getItemCategoriesById(category_id);
     const categories = itemCategories.data?.path_from_root.map((x: any) => x.name);
-
+    const formattedPriceAmount = forrmatItemPrice(price);
     return {
       id,
       title,
       description: plain_text,
-      price: { amount: price, currency: currency_id },
+      price: { amount: formattedPriceAmount[0], currency: currency_id, decimals: formattedPriceAmount[1] },
       condition,
       picture: pictures[0].url,
       free_shipping: shipping.free_shipping,
