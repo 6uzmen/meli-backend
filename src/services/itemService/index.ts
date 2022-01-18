@@ -12,8 +12,11 @@ export const getItemsBySearchParameter = async (req: express.Request) => {
   try {
     const response = await apiMercadoLibre.getItemsBySearchParamerter(searchParam, searchLimit);
     const { results, filters } = response.data;
+    // Extract categories from Filters.
+    const categories = filters.find((x: any) => x.id === 'category').values[0].path_from_root.map((x: any) => x.name);
+    // Extract used properties from each Item.
     const items = results.map((item: any) => {
-      const { id, title, price, currency_id, condition, thumbnail, shipping } = item;
+      const { id, title, price, currency_id, condition, thumbnail, shipping, address } = item;
       return {
         id,
         title,
@@ -21,10 +24,12 @@ export const getItemsBySearchParameter = async (req: express.Request) => {
         picture: thumbnail,
         condition,
         free_shipping: shipping?.free_shipping,
+        location: address?.state_name,
       };
     });
     return {
       items,
+      categories,
     };
   } catch (error) {
     throw new Error(error.message);
