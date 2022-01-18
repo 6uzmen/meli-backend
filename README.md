@@ -38,7 +38,7 @@ yarn start
 The folder structure of this app is explained below:
 
 | Name                | Description                                                                                      |
-| ------------------- | ------------------------------------------------------------------------------------------------ | ------------- | -------------------------------------------------------------------- |
+| ------------------- | ------------------------------------------------------------------------------------------------ |
 | **dist**            | Contains the distributable (or output) from your TypeScript build.                               |
 | **node_modules**    | Contains all npm dependencies                                                                    |
 | **src**             | Contains source code that will be compiled to the dist dir                                       |
@@ -49,5 +49,8 @@ The folder structure of this app is explained below:
 | **src/tests**       | Unit tests                                                                                       |
 | **src/utils**       | Helpfull functions used in the Application                                                       |
 | **src**/server.ts   | Entry point to express app                                                                       |
-| package.json        | Contains npm dependencies as well as [build scripts](#what-if-a-library-isnt-on-definitelytyped) | tsconfig.json | Config settings for compiling source code only written in TypeScript |
+| package.json        | Contains npm dependencies as well as [build scripts](#what-if-a-library-isnt-on-definitelytyped) |
+| tsconfig.json       | Config settings for compiling source code only written in TypeScript                             |
 | tslint.json         | Config settings for TSLint code style checking                                                   |
+| prettier.rc         | Config settings for Prettier code style checking                                                 |
+| nodemon.json        | Config settings for to run App with Nodemon                                                      |
