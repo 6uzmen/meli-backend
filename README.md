@@ -31,8 +31,6 @@ yarn install
 yarn start
 ```
 
-# TypeScript + Node
-
 ## Project Structure
 
 | Name                | Description                                                                                      |
