@@ -8,3 +8,5 @@ export const getItemsBySearchParamerter = (searchParam: string, limit: number) =
 export const getItemById = (itemId: string) => axios.get(`${API_URL}/items/${itemId}`);
 
 export const getItemDescriptionById = (itemId: string) => axios.get(`${API_URL}/items/${itemId}/description`);
+
+export const getItemCategoriesById = (categoryId: string) => axios.get(`${API_URL}/categories/${categoryId}`);

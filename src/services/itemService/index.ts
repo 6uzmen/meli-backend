@@ -39,9 +39,14 @@ export const getItemsBySearchParameter = async (req: express.Request) => {
 export const getItemAndDescriptionById = async (itemId: string) => {
   try {
     const itemInformation = await apiMercadoLibre.getItemById(itemId);
-    const { id, title, price, currency_id, condition, pictures, shipping, sold_quantity } = itemInformation.data;
+    const { id, category_id, title, price, currency_id, condition, pictures, shipping, sold_quantity } = itemInformation.data;
+
     const itemDescription = await apiMercadoLibre.getItemDescriptionById(itemId);
     const { plain_text } = itemDescription.data;
+
+    const itemCategories = await apiMercadoLibre.getItemCategoriesById(category_id);
+    const categories = itemCategories.data?.path_from_root.map((x: any) => x.name);
+
     return {
       id,
       title,
@@ -51,6 +56,7 @@ export const getItemAndDescriptionById = async (itemId: string) => {
       picture: pictures[0].url,
       free_shipping: shipping.free_shipping,
       sold_quantity,
+      categories,
     };
   } catch (error) {
     throw new Error(error.message);
