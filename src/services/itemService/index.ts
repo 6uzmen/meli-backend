@@ -5,15 +5,15 @@ import { forrmatItemPrice, parseIfIntPositive } from '../../utils';
 const DEFAULT_GET_ITEMS_LIMIT = 4;
 
 export const getItemsBySearchParameter = async (req: express.Request) => {
-  const { q, limit } = req.query;
-  // Check if limit received is a valid Number, else set Default Value.
-  const searchLimit: number = parseIfIntPositive(limit?.toString()) || DEFAULT_GET_ITEMS_LIMIT;
-  const searchParam = q ? q.toString() : '';
   try {
+    const { q, limit } = req.query;
+    // Check if limit received is a valid Number, else set Default Value.
+    const searchLimit: number = parseIfIntPositive(limit?.toString()) || DEFAULT_GET_ITEMS_LIMIT;
+    const searchParam = q ? q.toString() : '';
     const response = await apiMercadoLibre.getItemsBySearchParamerter(searchParam, searchLimit);
     const { results, filters } = response.data;
-    // Extract categories from Filters.
-    const categories = filters.find((x: any) => x.id === 'category').values[0].path_from_root.map((x: any) => x.name);
+    // Extract categories from Filters, if there are no Filters return empty array.
+    const categories = filters?.find((x: any) => x.id === 'category')?.values[0]?.path_from_root?.map((x: any) => x.name) ?? [];
     // Extract used properties from each Item.
     const items = results.map((item: any) => {
       const { id, title, price, currency_id, condition, thumbnail, shipping, address } = item;
@@ -28,6 +28,8 @@ export const getItemsBySearchParameter = async (req: express.Request) => {
         location: address?.state_name,
       };
     });
+    // tslint:disable-next-line:no-console
+    console.log(items);
     return {
       items,
       categories,
@@ -46,7 +48,7 @@ export const getItemAndDescriptionById = async (itemId: string) => {
     const { plain_text } = itemDescription.data;
 
     const itemCategories = await apiMercadoLibre.getItemCategoriesById(category_id);
-    const categories = itemCategories.data?.path_from_root.map((x: any) => x.name);
+    const categories = itemCategories.data?.path_from_root?.map((x: any) => x.name) ?? [];
     const formattedPriceAmount = forrmatItemPrice(price);
     return {
       id,
