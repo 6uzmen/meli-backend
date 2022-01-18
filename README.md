@@ -35,8 +35,6 @@ yarn start
 
 ## Project Structure
 
-The folder structure of this app is explained below:
-
 | Name                | Description                                                                                      |
 | ------------------- | ------------------------------------------------------------------------------------------------ |
 | **dist**            | Contains the distributable (or output) from your TypeScript build.                               |
